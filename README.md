@@ -8,3 +8,5 @@ Distro: https://adafruit-download.s3.amazonaws.com/2016-03-25_Jessie_PiTFT35r.zi
 
 ## Set RPI to Kiosk mode
 http://raspberrypi.stackexchange.com/questions/30093/epiphany-browser-in-full-screen-mode
+
+## Get code from Github
