@@ -1,0 +1,181 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io();
+      socket.on('liveStream', function(url) {
+        $('#stream').attr('src', url);
+        $('.start').hide();
+      });
+     
+      socket.on("temp", function(temp) {
+        $("#temp").dxCircularGauge({value:temp.temp});
+        $("#humid").dxCircularGauge({value:temp.humidity});
+      });
+      socket.on("light", function(light) {
+        $("#light").dxChart({dataSource: light});
+      });
+      socket.on("water", function(water) {
+        console.log("water",water);
+        
+        var color = "#FFFFFF"
+        if(water < 500)
+          color = "#FFC1C1";
+        else if(water <1500 && water > 500)
+          color = "#5B90F6";
+        $("#background").css("background-color",color);
+      });
+      function startStream() {
+        socket.emit('start-stream');
+        $('.start').hide();
+      }
+      startStream();
+    </script>
+  </head>
+  <body id="background">
+    <script src="http://ajax.aspnetcdn.com/ajax/globalize/0.1.1/globalize.min.js"></script>
+    <script src="http://cdn3.devexpress.com/jslib/13.2.9/js/dx.chartjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+    <div class="pure-g" style="height:100%">
+      <div class="pure-u-1-3" style="height: 50%">
+        <div id="temp" style="width:150px; height: 130px ;margin: 5px"></div>
+      </div>
+      <div class="pure-u-1-3" style="height: 50%">
+        <img src="" id="stream" style="width: 100%;margin-top: 5px">
+      </div>
+      <div class="pure-u-1-3" style="height: 50%">
+        <button class="pure-button" style="margin: 5px; width: 90%">Play Last Week</button>
+        <button class="pure-button" style="margin: 5px; width: 90%"">Play All Time</button>
+      </div>
+      <div class="pure-u-1-3" style="height: 50%">
+        <div id="humid" style="width:150px; height: 130px"></div>
+      </div>
+      <div class="pure-u-2-3" style="height: 50%">
+        <div id="light" style="width:100%; height:130px; margin-right: 5px"></div>
+      </div>
+    </div>
+    <!--<table width="100%">
+      <tr>
+        <td>
+          
+        </td>
+        <td> 
+
+            
+            
+        </td>
+      </tr>
+      <tr>
+        <td>
+          
+        </td>
+        <td>
+          
+        </td>
+      </tr>
+    </table>-->
+    
+    
+
+    <script type="text/javascript">
+
+      $("#temp").dxCircularGauge({
+        rangeContainer: { 
+          offset: 5,
+          ranges: [
+            { startValue: 0, endValue: 20, color: '#5B90F6' },
+            { startValue: 20, endValue: 30, color: '#00C957' },
+            { startValue: 30, endValue: 40, color: '#CD2626' }
+          ]
+        },
+        scale: {
+          startValue: 10,  endValue: 40,
+          majorTick: { tickInterval: 5 },
+          label: {
+          }
+        },
+        title: {
+          text: 'Temperature',
+          position: 'top-center'
+        },
+        tooltip: {
+              enabled: true,
+              customizeText: function (arg) {
+                  return 'Temp ' + arg.valueText;
+              }
+          },
+        subvalueIndicator: {
+          type: 'textCloud',
+          format: 'thousands',
+          text: {
+            customizeText: function (arg) {
+              return 'Goal ' + arg.valueText;
+            }
+          }  
+        },
+        animation: { enabled: false },
+        value: 25.5
+      });
+      $("#humid").dxCircularGauge({
+        rangeContainer: { 
+          offset: 5,
+          ranges: [
+            { startValue: 30, endValue: 50, color: '#5B90F6' },
+            { startValue: 50, endValue: 80, color: '#00C957' },
+            { startValue: 80, endValue: 100, color: '#CD2626' }
+          ]
+        },
+        scale: {
+          startValue: 30,  endValue: 100,
+          majorTick: { tickInterval: 5 },
+          label: {
+          }
+        },
+        title: {
+          text: 'Humidity',
+          position: 'top-center'
+        },
+        tooltip: {
+              enabled: true,
+              customizeText: function (arg) {
+                  return 'Temp ' + arg.valueText;
+              }
+          },
+        subvalueIndicator: {
+          type: 'textCloud',
+          format: 'thousands',
+          text: {
+            customizeText: function (arg) {
+              return 'Goal ' + arg.valueText;
+            }
+          }  
+        },
+        animation: { enabled: false },
+        value: 25.5
+      });
+    var chartDataSource = [];
+    $("#light").dxChart({
+        dataSource: chartDataSource,
+        commonSeriesSettings: {
+            argumentField: 'time'
+        },
+        argumentAxis: { 
+          type: "datetime",
+          visible: true,
+          tickInterval: {seconds: 30}
+        },
+        series: [{
+            name: 'Light',
+            valueField: 'light'
+        }],
+        legend: {
+            visible: false
+        },
+        animation: { enabled: false }
+    });
+    </script>
+  </body>
+</html>
