@@ -16,11 +16,17 @@ http://raspberrypi.stackexchange.com/questions/30093/epiphany-browser-in-full-sc
 ```git clone https://github.com/UI-Jakob/rpi-garden-camera.git```
 
 ## Install bcm2835
-```curl -O http://www.airspayce.com/mikem/bcm2835/bcm2835-1.50.tar.gz
+```
+curl -O http://www.airspayce.com/mikem/bcm2835/bcm2835-1.50.tar.gz
 tar zxvf bcm2835-1.50.tar.gz
 cd bcm2835-1.xx
 ./configure
 make
 sudo make check
 sudo make install
+```
+## Install rsub
+```
+sudo wget -O /usr/local/bin/rsub https://raw.github.com/aurora/rmate/master/rmate
+sudo chmod +x /usr/local/bin/rsub
 ```
