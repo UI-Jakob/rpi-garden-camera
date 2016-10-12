@@ -30,3 +30,8 @@ sudo make install
 sudo wget -O /usr/local/bin/rsub https://raw.github.com/aurora/rmate/master/rmate
 sudo chmod +x /usr/local/bin/rsub
 ```
+
+## Create timelapes
+```
+sudo gst-launch-1.0 multifilesrc location=image_00%04d.jpg  start-index=20 caps="image/jpeg,framerate=\(fraction\)24/1" ! jpegdec ! omxh264enc ! avimux ! filesink location=timelapse.avi
+```
